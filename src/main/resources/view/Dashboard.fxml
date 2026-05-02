@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.Button?>
+<VBox spacing="20" alignment="CENTER"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controller.DashboardController">
+
+    <Label fx:id="welcomeLabel" styleClass="title"/>
+
+    <Button text="Add Game" onAction="#goToAddGame"/>
+    <Button text="View Stats" onAction="#goToStats"/>
+
+</VBox>

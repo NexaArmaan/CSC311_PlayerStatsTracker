@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.Button?>
+<VBox spacing="20" alignment="CENTER"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controller.AddGameController">
+
+    <Label text="Add Game" styleClass="title"/>
+
+    <TextField fx:id="gameNameField" promptText="Game Name"/>
+
+    <Button text="Save" onAction="#handleSave"/>
+
+    <Label fx:id="statusLabel"/>
+
+</VBox>
