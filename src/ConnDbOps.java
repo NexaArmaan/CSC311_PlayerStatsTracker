@@ -23,8 +23,7 @@ public class ConnDbOps {
             st.executeUpdate(
                     "CREATE TABLE USERS (" +
                             "user_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, " +
-                            "username VARCHAR(100) NOT NULL UNIQUE, " +
-                            "email VARCHAR(200) NOT NULL UNIQUE)"
+                            "username VARCHAR(100) NOT NULL UNIQUE, "
             );
 
         } catch (SQLException ignored) {}
@@ -47,12 +46,10 @@ public class ConnDbOps {
             // STATS TABLE
             st.executeUpdate(
                     "CREATE TABLE STATS (" +
-                            "stat_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, " +
-                            "game_id INT NOT NULL, " +
+                            "game_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY , " +
                             "kills INT DEFAULT 0, " +
-                            "deaths INT DEFAULT 0, " +
-                            "assists INT DEFAULT 0, " +
-                            "score INT DEFAULT 0, " +
+                            "loses INT DEFAULT 0, " +
+                            "wins INT DEFAULT 0, " +
                             "FOREIGN KEY (game_id) REFERENCES GAMES(game_id))"
             );
 
@@ -84,13 +81,12 @@ public class ConnDbOps {
         }
     }
 
-    public boolean updateUser(int userId, String username, String email) {
-        String sql = "UPDATE USERS SET username = ?, email = ? WHERE user_id = ?";
+    public boolean updateUser(int userId, String username) {
+        String sql = "UPDATE USERS SET username = ? WHERE user_id = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, username);
-            ps.setString(2, email);
-            ps.setInt(3, userId);
+            ps.setInt(2, userId);
             ps.executeUpdate();
             return true;
         } catch (Exception e) {
@@ -170,15 +166,14 @@ public class ConnDbOps {
 
 
 
-    public boolean addStats(int gameId, int kills, int deaths, int assists, int score) {
-        String sql = "INSERT INTO STATS (game_id, kills, deaths, assists, score) VALUES (?, ?, ?, ?, ?)";
+    public boolean addStats(int gameId, int kills, int loses, int wins) {
+        String sql = "INSERT INTO STATS (game_id, kills, loses, wins) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, gameId);
             ps.setInt(2, kills);
-            ps.setInt(3, deaths);
-            ps.setInt(4, assists);
-            ps.setInt(5, score);
+            ps.setInt(3, loses);
+            ps.setInt(4, wins);
             ps.executeUpdate();
             return true;
         } catch (Exception e) {
@@ -198,15 +193,14 @@ public class ConnDbOps {
         }
     }
 
-    public boolean updateStats(int statId, int kills, int deaths, int assists, int score) {
-        String sql = "UPDATE STATS SET kills = ?, deaths = ?, assists = ?, score = ? WHERE stat_id = ?";
+    public boolean updateStats(int gameId, int kills, int loses, int wins) {
+        String sql = "UPDATE STATS SET kills = ?, loses = ?, wins = ? WHERE game_id = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, kills);
-            ps.setInt(2, deaths);
-            ps.setInt(3, assists);
-            ps.setInt(4, score);
-            ps.setInt(5, statId);
+            ps.setInt(2, loses);
+            ps.setInt(3, wins);
+            ps.setInt(4, gameId);
             ps.executeUpdate();
             return true;
         } catch (Exception e) {
@@ -215,9 +209,9 @@ public class ConnDbOps {
         }
     }
 
-    public boolean deleteStats(int statId) {
-        try (PreparedStatement ps = conn.prepareStatement("DELETE FROM STATS WHERE stat_id = ?")) {
-            ps.setInt(1, statId);
+    public boolean deleteStats(int gameId) {
+        try (PreparedStatement ps = conn.prepareStatement("DELETE FROM STATS WHERE game_id = ?")) {
+            ps.setInt(1, gameId);
             ps.executeUpdate();
             return true;
         } catch (Exception e) {
