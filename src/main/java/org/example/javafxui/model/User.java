@@ -1,4 +1,4 @@
-package model;
+package org.example.javafxui.model;
 
 public class User {
     public int id;

@@ -1,4 +1,4 @@
-package controller;
+package org.example.javafxui.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
 import javafx.stage.Stage;
+import org.example.javafxui.Session;
 
 public class DashboardController {
 

@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TextField?>
 <VBox spacing="20" alignment="CENTER"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="controller.StatsController">
+      fx:controller="org.example.javafxui.controller.StatsController"
+      styleClass="root-pane">
 
-    <Label text="Stats" styleClass="title"/>
+    <Label text="Add Stats" styleClass="title"/>
 
-    <TextField fx:id="winsField" promptText="Wins"/>
-    <TextField fx:id="lossesField" promptText="Losses"/>
+    <TextField fx:id="gameIdField" promptText="Game ID"/>
     <TextField fx:id="killsField" promptText="Kills"/>
+    <TextField fx:id="deathsField" promptText="Deaths"/>
+    <TextField fx:id="assistsField" promptText="Assists"/>
+    <TextField fx:id="scoreField" promptText="Score"/>
 
-    <Button text="Save" onAction="#handleSave"/>
+    <Button text="Save Stats" onAction="#handleSaveStats"/>
+    <Button text="Back" onAction="#backToDashboard"/>
 
-    <Label fx:id="statusLabel"/>
+    <Label fx:id="messageLabel"/>
 
 </VBox>

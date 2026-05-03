@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<?import javafx.scene.control.Button?>
 <VBox spacing="20" alignment="CENTER"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="controller.LoginController">
+      fx:controller="org.example.javafxui.controller.LoginController"
+      styleClass="root-pane">
 
     <Label text="Game Tracker" styleClass="title"/>
 
     <TextField fx:id="usernameField" promptText="Username"/>
+    <TextField fx:id="emailField" promptText="Email"/>
 
-    <Button text="Login" onAction="#handleLogin"/>
+    <HBox spacing="10" alignment="CENTER">
+        <Button text="Login" onAction="#handleLogin"/>
+        <Button text="Register" onAction="#handleRegister"/>
+    </HBox>
 
-    <Label fx:id="errorLabel"/>
+    <Label fx:id="messageLabel"/>
 
 </VBox>
