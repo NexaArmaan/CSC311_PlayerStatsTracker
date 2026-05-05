@@ -7,6 +7,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import org.example.javafxui.Session;
 
@@ -25,6 +26,9 @@ public class DashboardController {
     private Label averageScoreLabel;
 
     @FXML
+    private ListView<String> gamesListView;
+
+    @FXML
     public void initialize() {
         if (Session.currentUser == null) {
             welcomeLabel.setText("Welcome");
@@ -40,6 +44,8 @@ public class DashboardController {
         totalGamesLabel.setText("Total Games: " + Session.db.getTotalGames(userId));
         totalKillsLabel.setText("Total Kills: " + Session.db.getTotalKills(userId));
         averageScoreLabel.setText("Average Score: " + Session.db.getAverageScore(userId));
+
+        gamesListView.getItems().setAll(Session.db.getUserGamesWithIds(userId));
     }
 
     @FXML

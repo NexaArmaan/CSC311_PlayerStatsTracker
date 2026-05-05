@@ -1,18 +1,46 @@
-.root {
-    -fx-background-color: linear-gradient(to bottom, #1e1e2f, #2c2c54);
+.root-pane {
+    -fx-background-color: linear-gradient(to bottom right, #111827, #1e1b4b);
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
 }
 
 .title {
-    -fx-font-size: 26px;
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
     -fx-text-fill: white;
+}
+
+.section-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.label {
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
 }
 
 .button {
-    -fx-background-color: #6c5ce7;
+    -fx-background-color: #6366f1;
     -fx-text-fill: white;
+    -fx-font-size: 14px;
     -fx-background-radius: 10;
+    -fx-padding: 10 18 10 18;
+    -fx-cursor: hand;
 }
 
-.text-field {
+.button:hover {
+    -fx-background-color: #4f46e5;
+}
+
+.text-field,
+.password-field {
+    -fx-background-radius: 8;
+    -fx-padding: 10;
+    -fx-font-size: 14px;
+}
+
+.list-view {
     -fx-background-radius: 10;
+    -fx-border-radius: 10;
 }
