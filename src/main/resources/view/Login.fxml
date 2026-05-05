@@ -3,19 +3,19 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox spacing="20" alignment="CENTER"
+<VBox spacing="18" alignment="CENTER"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="org.example.javafxui.controller.LoginController"
       styleClass="root-pane">
 
-    <Label text="Game Tracker" styleClass="title"/>
+    <Label text="Player Stats Tracker" styleClass="title"/>
 
-    <TextField fx:id="usernameField" promptText="Username"/>
-    <TextField fx:id="emailField" promptText="Email"/>
+    <TextField fx:id="loginField" promptText="Username or Email" maxWidth="350"/>
+    <PasswordField fx:id="passwordField" promptText="Password" maxWidth="350"/>
 
-    <HBox spacing="10" alignment="CENTER">
+    <HBox spacing="12" alignment="CENTER">
         <Button text="Login" onAction="#handleLogin"/>
-        <Button text="Register" onAction="#handleRegister"/>
+        <Button text="Create Account" onAction="#goToRegister"/>
     </HBox>
 
     <Label fx:id="messageLabel"/>
