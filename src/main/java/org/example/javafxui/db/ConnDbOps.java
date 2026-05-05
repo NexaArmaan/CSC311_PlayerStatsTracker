@@ -369,4 +369,78 @@ public class ConnDbOps {
 
         return 0;
     }
+
+    public int getTotalDeaths(int userId) {
+        String sql =
+                "SELECT COALESCE(SUM(s.deaths), 0) AS total_deaths " +
+                        "FROM STATS s " +
+                        "JOIN GAMES g ON s.game_id = g.game_id " +
+                        "WHERE g.user_id = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("total_deaths");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    public int getTotalAssists(int userId) {
+        String sql =
+                "SELECT COALESCE(SUM(s.assists), 0) AS total_assists " +
+                        "FROM STATS s " +
+                        "JOIN GAMES g ON s.game_id = g.game_id " +
+                        "WHERE g.user_id = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("total_assists");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    public int getBestScore(int userId) {
+        String sql =
+                "SELECT COALESCE(MAX(s.score), 0) AS best_score " +
+                        "FROM STATS s " +
+                        "JOIN GAMES g ON s.game_id = g.game_id " +
+                        "WHERE g.user_id = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("best_score");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    public double getKDRatio(int userId) {
+        int kills = getTotalKills(userId);
+        int deaths = getTotalDeaths(userId);
+
+        if (deaths == 0) {
+            return kills;
+        }
+
+        return (double) kills / deaths;
+    }
 }

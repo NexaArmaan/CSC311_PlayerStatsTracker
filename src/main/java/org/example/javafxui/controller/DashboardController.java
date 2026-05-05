@@ -59,6 +59,11 @@ public class DashboardController {
     }
 
     @FXML
+    public void goToReport(ActionEvent e) throws Exception {
+        load(e, "/view/Report.fxml");
+    }
+
+    @FXML
     public void logout(ActionEvent e) throws Exception {
         Session.currentUser = null;
         load(e, "/view/Login.fxml");
