@@ -74,7 +74,7 @@ public class RegisterController {
     private void loadScene(ActionEvent event, String fxmlPath) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
 
-        Scene scene = new Scene(root, 900, 600);
+        Scene scene = new Scene(root, 1400, 900);
         scene.getStylesheets().add(
                 getClass().getResource("/styles/app.css").toExternalForm()
         );

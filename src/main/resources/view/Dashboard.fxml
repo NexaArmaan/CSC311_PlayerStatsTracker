@@ -3,59 +3,37 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<?import javafx.scene.chart.BarChart?>
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.chart.LineChart?>
-<VBox spacing="24" alignment="CENTER"
+<VBox spacing="26" alignment="CENTER"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="org.example.javafxui.controller.DashboardController"
       styleClass="root-pane">
 
     <Label fx:id="welcomeLabel" text="Welcome" styleClass="title"/>
 
-    <HBox spacing="30" alignment="CENTER">
+    <HBox spacing="22" alignment="CENTER">
         <VBox alignment="CENTER" styleClass="stat-card">
-            <Label text="Total Games" styleClass="card-title"/>
+            <Label text="🎮 Total Games" styleClass="card-title"/>
             <Label fx:id="totalGamesLabel" text="0" styleClass="card-value"/>
         </VBox>
 
         <VBox alignment="CENTER" styleClass="stat-card">
-            <Label text="Total Kills" styleClass="card-title"/>
+            <Label text="🎯 Total Kills" styleClass="card-title"/>
             <Label fx:id="totalKillsLabel" text="0" styleClass="card-value"/>
         </VBox>
 
         <VBox alignment="CENTER" styleClass="stat-card">
-            <Label text="Average Score" styleClass="card-title"/>
+            <Label text="📈 Average Score" styleClass="card-title"/>
             <Label fx:id="averageScoreLabel" text="0" styleClass="card-value"/>
         </VBox>
     </HBox>
 
-    <VBox spacing="10" alignment="CENTER" styleClass="panel">
+    <VBox spacing="12" alignment="CENTER" styleClass="panel">
         <Label text="Your Games" styleClass="section-title"/>
-        <ListView fx:id="gamesListView" maxWidth="420" maxHeight="160"/>
+        <ListView fx:id="gamesListView" maxWidth="520" maxHeight="180"/>
+        <Label text="Select a game ID when adding stats." styleClass="hint-label"/>
     </VBox>
 
-
-    <BarChart fx:id="kdaChart" prefHeight="280" minHeight="280" title="KDA per game">
-        <xAxis>
-            <CategoryAxis label="Game"/>
-        </xAxis>
-        <yAxis>
-            <NumberAxis label="Count"/>
-        </yAxis>
-    </BarChart>
-
-    <LineChart fx:id="scoreChart" prefHeight="220" title="Score over time" legendVisible="false">
-        <xAxis>
-            <CategoryAxis label="Game"/>
-        </xAxis>
-        <yAxis>
-            <NumberAxis label="Score"/>
-        </yAxis>
-    </LineChart>
-
-    <HBox spacing="14" alignment="CENTER">
+    <HBox spacing="16" alignment="CENTER">
         <Button text="Add Game" onAction="#goToAddGame"/>
         <Button text="Add Stats" onAction="#goToStats"/>
         <Button text="View Report" onAction="#goToReport"/>

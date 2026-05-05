@@ -456,6 +456,38 @@ public class ConnDbOps {
         return 0;
     }
 
+    public List<String[]> getStatsChartData(int userId) {
+        List<String[]> data = new ArrayList<>();
+
+        String sql =
+                "SELECT g.game_name, s.kills, s.deaths, s.assists, s.score " +
+                        "FROM STATS s " +
+                        "JOIN GAMES g ON s.game_id = g.game_id " +
+                        "WHERE g.user_id = ? " +
+                        "ORDER BY s.stat_id";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                data.add(new String[]{
+                        rs.getString("game_name"),
+                        String.valueOf(rs.getInt("kills")),
+                        String.valueOf(rs.getInt("deaths")),
+                        String.valueOf(rs.getInt("assists")),
+                        String.valueOf(rs.getInt("score"))
+                });
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return data;
+    }
+
     public double getKDRatio(int userId) {
         int kills = getTotalKills(userId);
         int deaths = getTotalDeaths(userId);

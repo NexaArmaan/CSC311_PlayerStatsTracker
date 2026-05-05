@@ -15,8 +15,8 @@ public class MainApp extends Application {
 
         Scene scene = new Scene(
                 FXMLLoader.load(getClass().getResource("/view/Login.fxml")),
-                900,
-                600
+                1400,
+                900
         );
 
         stage.setTitle("Player Stats Tracker");
