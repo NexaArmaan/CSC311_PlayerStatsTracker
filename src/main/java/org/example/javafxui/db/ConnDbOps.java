@@ -3,6 +3,8 @@ package org.example.javafxui.db;
 import org.example.javafxui.model.User;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ConnDbOps {
 
@@ -20,7 +22,17 @@ public class ConnDbOps {
         }
     }
 
+    private boolean ensureConnected() {
+        if (conn != null) {
+            return true;
+        }
+
+        return connect();
+    }
+
     private void createTables() {
+
+        // USERS TABLE
         try (Statement stmt = conn.createStatement()) {
             stmt.executeUpdate(
                     "CREATE TABLE USERS (" +
@@ -30,12 +42,54 @@ public class ConnDbOps {
                             "password VARCHAR(100) NOT NULL" +
                             ")"
             );
+            System.out.println("USERS table created.");
+        } catch (SQLException ignored) {
+            // Table probably already exists
+        }
+
+        // GAMES TABLE
+        try (Statement stmt = conn.createStatement()) {
+            stmt.executeUpdate(
+                    "CREATE TABLE GAMES (" +
+                            "game_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, " +
+                            "user_id INT NOT NULL, " +
+                            "game_name VARCHAR(200) NOT NULL, " +
+                            "FOREIGN KEY (user_id) REFERENCES USERS(user_id)" +
+                            ")"
+            );
+            System.out.println("GAMES table created.");
+        } catch (SQLException ignored) {
+            // Table probably already exists
+        }
+
+        // STATS TABLE
+        try (Statement stmt = conn.createStatement()) {
+            stmt.executeUpdate(
+                    "CREATE TABLE STATS (" +
+                            "stat_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, " +
+                            "game_id INT NOT NULL, " +
+                            "kills INT DEFAULT 0, " +
+                            "deaths INT DEFAULT 0, " +
+                            "assists INT DEFAULT 0, " +
+                            "score INT DEFAULT 0, " +
+                            "FOREIGN KEY (game_id) REFERENCES GAMES(game_id)" +
+                            ")"
+            );
+            System.out.println("STATS table created.");
         } catch (SQLException ignored) {
             // Table probably already exists
         }
     }
 
+    // ---------------------------
+    // USER / AUTH METHODS
+    // ---------------------------
+
     public boolean registerUser(String username, String email, String password) {
+        if (!ensureConnected()) {
+            return false;
+        }
+
         String sql = "INSERT INTO USERS (username, email, password) VALUES (?, ?, ?)";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -50,12 +104,11 @@ public class ConnDbOps {
         }
     }
 
-    public boolean insertGame(int userId, String gameName) {
-        System.out.println("Inserted game: " + gameName + " for user " + userId);
-        return true;
-    }
-
     public User loginUser(String usernameOrEmail, String password) {
+        if (!ensureConnected()) {
+            return null;
+        }
+
         String sql = "SELECT * FROM USERS WHERE (username = ? OR email = ?) AND password = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -81,25 +134,215 @@ public class ConnDbOps {
         return null;
     }
 
-    public boolean insertStats(int gameId, int kills, int deaths, int assists, int score) {
-        // Temporary placeholder until full Derby stats table is finished
-        System.out.println("Inserted stats for game ID: " + gameId);
-        System.out.println("Kills: " + kills);
-        System.out.println("Deaths: " + deaths);
-        System.out.println("Assists: " + assists);
-        System.out.println("Score: " + score);
-        return true;
+    public boolean updateUser(int userId, String newUsername) {
+        String sql = "UPDATE USERS SET username = ? WHERE user_id = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, newUsername);
+            ps.setInt(2, userId);
+            ps.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
+    public boolean deleteUser(int userId) {
+        String sql = "DELETE FROM USERS WHERE user_id = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            ps.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // ---------------------------
+    // GAME METHODS
+    // ---------------------------
+
+    public boolean insertGame(int userId, String gameName) {
+        String sql = "INSERT INTO GAMES (user_id, game_name) VALUES (?, ?)";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            ps.setString(2, gameName);
+            ps.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public List<String> getUserGames(int userId) {
+        List<String> games = new ArrayList<>();
+        String sql = "SELECT game_name FROM GAMES WHERE user_id = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                games.add(rs.getString("game_name"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return games;
+    }
+
+    public boolean updateGame(int gameId, String newName) {
+        String sql = "UPDATE GAMES SET game_name = ? WHERE game_id = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, newName);
+            ps.setInt(2, gameId);
+            ps.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean deleteGame(int gameId) {
+        String sql = "DELETE FROM GAMES WHERE game_id = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, gameId);
+            ps.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // ---------------------------
+    // STATS METHODS
+    // ---------------------------
+
+    public boolean insertStats(int gameId, int kills, int deaths, int assists, int score) {
+        String sql = "INSERT INTO STATS (game_id, kills, deaths, assists, score) VALUES (?, ?, ?, ?, ?)";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, gameId);
+            ps.setInt(2, kills);
+            ps.setInt(3, deaths);
+            ps.setInt(4, assists);
+            ps.setInt(5, score);
+            ps.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean updateStats(int statId, int kills, int deaths, int assists, int score) {
+        String sql = "UPDATE STATS SET kills = ?, deaths = ?, assists = ?, score = ? WHERE stat_id = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, kills);
+            ps.setInt(2, deaths);
+            ps.setInt(3, assists);
+            ps.setInt(4, score);
+            ps.setInt(5, statId);
+            ps.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean deleteStats(int statId) {
+        String sql = "DELETE FROM STATS WHERE stat_id = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, statId);
+            ps.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // ---------------------------
+    // DASHBOARD SUMMARY METHODS
+    // ---------------------------
+
     public int getTotalGames(int userId) {
+        String sql = "SELECT COUNT(*) AS total_games FROM GAMES WHERE user_id = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("total_games");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return 0;
     }
 
     public int getTotalKills(int userId) {
+        String sql =
+                "SELECT COALESCE(SUM(s.kills), 0) AS total_kills " +
+                        "FROM STATS s " +
+                        "JOIN GAMES g ON s.game_id = g.game_id " +
+                        "WHERE g.user_id = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("total_kills");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return 0;
     }
 
     public double getAverageScore(int userId) {
+        String sql =
+                "SELECT COALESCE(AVG(s.score), 0) AS average_score " +
+                        "FROM STATS s " +
+                        "JOIN GAMES g ON s.game_id = g.game_id " +
+                        "WHERE g.user_id = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getDouble("average_score");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return 0;
     }
 }

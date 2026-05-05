@@ -9,7 +9,9 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Session.db.connect();
+        if (!Session.db.connect()) {
+            throw new RuntimeException("Database connection failed. App cannot start.");
+        }
 
         Scene scene = new Scene(
                 FXMLLoader.load(getClass().getResource("/view/Login.fxml")),
