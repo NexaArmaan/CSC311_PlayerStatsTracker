@@ -323,6 +323,30 @@ public class ConnDbOps {
         return 0;
     }
 
+    public List<String> getUserGamesWithIds(int userId) {
+        List<String> games = new ArrayList<>();
+
+        String sql = "SELECT game_id, game_name FROM GAMES WHERE user_id = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int gameId = rs.getInt("game_id");
+                String gameName = rs.getString("game_name");
+
+                games.add("ID " + gameId + " - " + gameName);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return games;
+    }
+
     public double getAverageScore(int userId) {
         String sql =
                 "SELECT COALESCE(AVG(s.score), 0) AS average_score " +

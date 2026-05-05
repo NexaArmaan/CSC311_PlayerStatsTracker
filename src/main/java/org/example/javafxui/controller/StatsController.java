@@ -39,8 +39,11 @@ public class StatsController {
                 messageLabel.setText("Error saving stats");
             }
 
+        } catch (NumberFormatException e) {
+            messageLabel.setText("Enter valid numbers only.");
         } catch (Exception e) {
-            messageLabel.setText("Enter valid numbers");
+            messageLabel.setText("Stats could not be saved. Make sure the Game ID exists.");
+            e.printStackTrace();
         }
     }
 
