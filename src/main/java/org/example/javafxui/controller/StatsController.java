@@ -1,4 +1,10 @@
 package org.example.javafxui.controller;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 import org.example.javafxui.Session;
 import org.example.javafxui.model.User;
 import javafx.fxml.FXML;
@@ -36,5 +42,12 @@ public class StatsController {
         } catch (Exception e) {
             messageLabel.setText("Enter valid numbers");
         }
+    }
+
+    @FXML
+    public void backToDashboard(ActionEvent event) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/view/Dashboard.fxml"));
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(new Scene(root, 900, 600));
     }
 }

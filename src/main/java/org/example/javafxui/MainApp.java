@@ -17,10 +17,6 @@ public class MainApp extends Application {
                 600
         );
 
-        scene.getStylesheets().add(
-                getClass().getResource("/styles/app.css").toExternalForm()
-        );
-
         stage.setTitle("Player Stats Tracker");
         stage.setScene(scene);
         stage.show();

@@ -1,5 +1,11 @@
 package org.example.javafxui.controller;
 
+import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 import org.example.javafxui.Session;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -30,5 +36,12 @@ public class AddGameController {
         } catch (Exception e) {
             messageLabel.setText(e.getMessage());
         }
+    }
+
+    @FXML
+    public void backToDashboard(ActionEvent event) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/view/Dashboard.fxml"));
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(new Scene(root, 900, 600));
     }
 }

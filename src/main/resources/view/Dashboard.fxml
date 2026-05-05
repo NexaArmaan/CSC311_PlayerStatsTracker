@@ -3,9 +3,14 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
 <VBox spacing="20" alignment="CENTER"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="org.example.javafxui.controller.DashboardController"
+      stylesheets="@/styles/app.css"
       styleClass="root-pane">
 
     <Label fx:id="welcomeLabel" styleClass="title"/>
@@ -16,4 +21,14 @@
     <Label fx:id="totalGamesLabel" text="Total Games: 0"/>
     <Label fx:id="totalKillsLabel" text="Total Kills: 0"/>
     <Label fx:id="averageScoreLabel" text="Average Score: 0"/>
+    <BarChart fx:id="kdaChart" prefHeight="220" title="KDA per game">
+        <xAxis><CategoryAxis label="Game"/></xAxis>
+        <yAxis><NumberAxis label="Count"/></yAxis>
+    </BarChart>
+
+    <LineChart fx:id="scoreLineChart" prefHeight="220" title="Score over time">
+        <xAxis><CategoryAxis label="Game"/></xAxis>
+        <yAxis><NumberAxis label="Score"/></yAxis>
+    </LineChart>
+
 </VBox>
