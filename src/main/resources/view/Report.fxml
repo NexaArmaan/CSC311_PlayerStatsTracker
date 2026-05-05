@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="22" alignment="CENTER"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.example.javafxui.controller.ReportController"
+      styleClass="root-pane">
+
+    <Label text="Performance Report" styleClass="title"/>
+
+    <GridPane hgap="18" vgap="18" alignment="CENTER" styleClass="dashboard-grid">
+
+        <VBox styleClass="stat-card" GridPane.rowIndex="0" GridPane.columnIndex="0">
+            <Label text="Total Games" styleClass="card-title"/>
+            <Label fx:id="totalGamesLabel" text="0" styleClass="card-value"/>
+        </VBox>
+
+        <VBox styleClass="stat-card" GridPane.rowIndex="0" GridPane.columnIndex="1">
+            <Label text="Total Kills" styleClass="card-title"/>
+            <Label fx:id="totalKillsLabel" text="0" styleClass="card-value"/>
+        </VBox>
+
+        <VBox styleClass="stat-card" GridPane.rowIndex="0" GridPane.columnIndex="2">
+            <Label text="Total Deaths" styleClass="card-title"/>
+            <Label fx:id="totalDeathsLabel" text="0" styleClass="card-value"/>
+        </VBox>
+
+        <VBox styleClass="stat-card" GridPane.rowIndex="1" GridPane.columnIndex="0">
+            <Label text="Total Assists" styleClass="card-title"/>
+            <Label fx:id="totalAssistsLabel" text="0" styleClass="card-value"/>
+        </VBox>
+
+        <VBox styleClass="stat-card" GridPane.rowIndex="1" GridPane.columnIndex="1">
+            <Label text="Average Score" styleClass="card-title"/>
+            <Label fx:id="averageScoreLabel" text="0" styleClass="card-value"/>
+        </VBox>
+
+        <VBox styleClass="stat-card" GridPane.rowIndex="1" GridPane.columnIndex="2">
+            <Label text="Best Score" styleClass="card-title"/>
+            <Label fx:id="bestScoreLabel" text="0" styleClass="card-value"/>
+        </VBox>
+
+        <VBox styleClass="stat-card-wide" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="3">
+            <Label text="K/D Ratio" styleClass="card-title"/>
+            <Label fx:id="kdRatioLabel" text="0.00" styleClass="card-value"/>
+        </VBox>
+
+    </GridPane>
+
+    <Button text="Back to Dashboard" onAction="#backToDashboard"/>
+
+</VBox>

@@ -40,8 +40,19 @@ public class AddGameController {
 
     @FXML
     public void backToDashboard(ActionEvent event) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/view/Dashboard.fxml"));
+        loadScene(event, "/view/Dashboard.fxml");
+    }
+
+    private void loadScene(ActionEvent event, String fxmlPath) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
+
+        Scene scene = new Scene(root, 900, 600);
+        scene.getStylesheets().add(
+                getClass().getResource("/styles/app.css").toExternalForm()
+        );
+
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(new Scene(root, 900, 600));
+        stage.setScene(scene);
+        stage.show();
     }
 }

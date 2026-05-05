@@ -3,19 +3,40 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox spacing="20" alignment="CENTER"
+<VBox spacing="24" alignment="CENTER"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="org.example.javafxui.controller.DashboardController"
       styleClass="root-pane">
 
-    <Label fx:id="welcomeLabel" styleClass="title"/>
+    <Label fx:id="welcomeLabel" text="Welcome" styleClass="title"/>
 
-    <Button text="Add Game" onAction="#goToAddGame"/>
-    <Button text="Add Stats" onAction="#goToStats"/>
-    <Button text="Logout" onAction="#logout"/>
-    <Label fx:id="totalGamesLabel" text="Total Games: 0"/>
-    <Label fx:id="totalKillsLabel" text="Total Kills: 0"/>
-    <Label fx:id="averageScoreLabel" text="Average Score: 0"/>
-    <Label text="Your Games:"/>
-    <ListView fx:id="gamesListView" maxWidth="350" maxHeight="150"/>
+    <HBox spacing="30" alignment="CENTER">
+        <VBox alignment="CENTER" styleClass="stat-card">
+            <Label text="Total Games" styleClass="card-title"/>
+            <Label fx:id="totalGamesLabel" text="0" styleClass="card-value"/>
+        </VBox>
+
+        <VBox alignment="CENTER" styleClass="stat-card">
+            <Label text="Total Kills" styleClass="card-title"/>
+            <Label fx:id="totalKillsLabel" text="0" styleClass="card-value"/>
+        </VBox>
+
+        <VBox alignment="CENTER" styleClass="stat-card">
+            <Label text="Average Score" styleClass="card-title"/>
+            <Label fx:id="averageScoreLabel" text="0" styleClass="card-value"/>
+        </VBox>
+    </HBox>
+
+    <VBox spacing="10" alignment="CENTER" styleClass="panel">
+        <Label text="Your Games" styleClass="section-title"/>
+        <ListView fx:id="gamesListView" maxWidth="420" maxHeight="160"/>
+    </VBox>
+
+    <HBox spacing="14" alignment="CENTER">
+        <Button text="Add Game" onAction="#goToAddGame"/>
+        <Button text="Add Stats" onAction="#goToStats"/>
+        <Button text="View Report" onAction="#goToReport"/>
+        <Button text="Logout" onAction="#logout"/>
+    </HBox>
+
 </VBox>
