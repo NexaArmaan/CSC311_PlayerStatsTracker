@@ -10,18 +10,18 @@
 
     <Label fx:id="welcomeLabel" text="Welcome" styleClass="title"/>
 
-    <HBox spacing="18" alignment="CENTER">
-        <VBox styleClass="stat-card">
+    <HBox spacing="30" alignment="CENTER">
+        <VBox alignment="CENTER" styleClass="stat-card">
             <Label text="Total Games" styleClass="card-title"/>
             <Label fx:id="totalGamesLabel" text="0" styleClass="card-value"/>
         </VBox>
 
-        <VBox styleClass="stat-card">
+        <VBox alignment="CENTER" styleClass="stat-card">
             <Label text="Total Kills" styleClass="card-title"/>
             <Label fx:id="totalKillsLabel" text="0" styleClass="card-value"/>
         </VBox>
 
-        <VBox styleClass="stat-card">
+        <VBox alignment="CENTER" styleClass="stat-card">
             <Label text="Average Score" styleClass="card-title"/>
             <Label fx:id="averageScoreLabel" text="0" styleClass="card-value"/>
         </VBox>
