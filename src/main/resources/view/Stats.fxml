@@ -11,7 +11,7 @@
 
     <Label text="Add Stats" styleClass="title"/>
 
-    <TextField fx:id="gameIdField" promptText="Game ID"/>
+    <ComboBox fx:id="gameDropdown" promptText="Select Game"/>
     <TextField fx:id="killsField" promptText="Kills"/>
     <TextField fx:id="deathsField" promptText="Deaths"/>
     <TextField fx:id="assistsField" promptText="Assists"/>

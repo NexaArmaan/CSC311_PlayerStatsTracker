@@ -3,6 +3,10 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.LineChart?>
 <VBox spacing="20" alignment="CENTER"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="org.example.javafxui.controller.DashboardController"
@@ -16,6 +20,24 @@
     <Label fx:id="totalGamesLabel" text="Total Games: 0"/>
     <Label fx:id="totalKillsLabel" text="Total Kills: 0"/>
     <Label fx:id="averageScoreLabel" text="Average Score: 0"/>
+
+    <BarChart fx:id="kdaChart" prefHeight="280" minHeight="280" title="KDA per game">
+        <xAxis>
+            <CategoryAxis label="Game"/>
+        </xAxis>
+        <yAxis>
+            <NumberAxis label="Count"/>
+        </yAxis>
+    </BarChart>
+
+    <LineChart fx:id="scoreChart" prefHeight="220" title="Score over time" legendVisible="false">
+        <xAxis>
+            <CategoryAxis label="Game"/>
+        </xAxis>
+        <yAxis>
+            <NumberAxis label="Score"/>
+        </yAxis>
+    </LineChart>
     <Label text="Your Games:"/>
     <ListView fx:id="gamesListView" maxWidth="350" maxHeight="150"/>
 </VBox>

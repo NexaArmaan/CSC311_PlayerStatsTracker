@@ -2,6 +2,8 @@ package org.example.javafxui.service;
 
 import org.example.javafxui.db.ConnDbOps;
 
+import java.util.List;
+
 public class GameService {
     private final ConnDbOps db;
 
@@ -16,6 +18,15 @@ public class GameService {
 
         if (gameName == null || gameName.trim().isEmpty()) {
             throw new IllegalArgumentException("Game name cannot be empty.");
+        }
+
+        String trimmed = gameName.trim();
+
+        List<String> existingGames = db.getUserGames(userId);
+        for (String game : existingGames) {
+            if(game.equalsIgnoreCase(trimmed)) {
+                throw new IllegalArgumentException("You already have a game with the same name '" + trimmed + "'.");
+            }
         }
 
         boolean success = db.insertGame(userId, gameName.trim());
