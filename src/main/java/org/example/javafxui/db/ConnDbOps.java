@@ -1,5 +1,6 @@
 package org.example.javafxui.db;
 
+import org.example.javafxui.model.Stats;
 import org.example.javafxui.model.User;
 
 import java.sql.*;
@@ -161,6 +162,28 @@ public class ConnDbOps {
         }
     }
 
+    public List<Stats> getUserStats(int userId) {
+        List<Stats> list = new ArrayList<>();
+        String sql =
+                "SELECT s.game_id, s.kills, s.deaths, s.assists, s.score " +
+                        "FROM STATS s JOIN GAMES g ON s.game_id = g.game_id " +
+                        "WHERE g.user_id = ? ORDER BY s.stat_id";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(new Stats(
+                        rs.getInt("game_id"),
+                        rs.getInt("kills"),
+                        rs.getInt("deaths"),
+                        rs.getInt("assists"),
+                        rs.getInt("score")
+                ));
+            }
+        } catch (SQLException e) { e.printStackTrace(); }
+        return list;
+    }
     // ---------------------------
     // GAME METHODS
     // ---------------------------

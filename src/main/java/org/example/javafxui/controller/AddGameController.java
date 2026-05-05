@@ -1,5 +1,11 @@
 package org.example.javafxui.controller;
 
+import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 import org.example.javafxui.Session;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;

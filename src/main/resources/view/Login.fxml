@@ -6,6 +6,7 @@
 <VBox spacing="18" alignment="CENTER"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="org.example.javafxui.controller.LoginController"
+      stylesheets="@/styles/app.css"
       styleClass="root-pane">
 
     <Label text="Player Stats Tracker" styleClass="title"/>
