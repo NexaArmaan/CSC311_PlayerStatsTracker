@@ -1,69 +1,60 @@
 package org.example.javafxui.controller;
-import org.example.javafxui.Session;
-import org.example.javafxui.model.User;
-import javafx.fxml.FXML;
-import javafx.scene.control.*;
+
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import java.io.IOException;
+import org.example.javafxui.Session;
+import org.example.javafxui.model.User;
 
 public class LoginController {
 
-    @FXML private TextField usernameField;
-    @FXML private TextField emailField;
-    @FXML private Label messageLabel;
+    @FXML
+    private TextField loginField;
 
     @FXML
-    public void handleRegister() {
-        String username = usernameField.getText().trim();
-        String email = emailField.getText().trim();
-
-        if (username.isEmpty() || email.isEmpty()) {
-            messageLabel.setText("Enter username and email");
-            return;
-        }
-
-        if (!email.contains("@")) {
-            messageLabel.setText("Enter a valid email");
-            return;
-        }
-
-        boolean success = Session.db.insertUser(username, email);
-
-        if (success) {
-            messageLabel.setText("Registered successfully. You can now login.");
-        } else {
-            messageLabel.setText("Registration failed.");
-        }
-    }
+    private PasswordField passwordField;
 
     @FXML
-    public void handleLogin(ActionEvent event) throws IOException {
-        String username = usernameField.getText().trim();
-        String email = emailField.getText().trim();
+    private Label messageLabel;
 
-        if (username.isEmpty() || email.isEmpty()) {
-            messageLabel.setText("Enter username and email");
+    @FXML
+    public void handleLogin(ActionEvent event) throws Exception {
+        String login = loginField.getText().trim();
+        String password = passwordField.getText();
+
+        if (login.isEmpty() || password.isEmpty()) {
+            messageLabel.setText("Enter username/email and password.");
             return;
         }
 
-        User user = Session.db.loginUser(username, email);
+        User user = Session.db.loginUser(login, password);
 
         if (user == null) {
-            messageLabel.setText("Invalid login.");
+            messageLabel.setText("Invalid login credentials.");
             return;
         }
 
         Session.currentUser = user;
+        goToDashboard(event);
+    }
 
+    @FXML
+    public void goToRegister(ActionEvent event) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/view/Register.fxml"));
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(new Scene(root, 900, 600));
+    }
+
+    private void goToDashboard(ActionEvent event) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/view/Dashboard.fxml"));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(new Scene(root));
+        stage.setScene(new Scene(root, 900, 600));
     }
 }

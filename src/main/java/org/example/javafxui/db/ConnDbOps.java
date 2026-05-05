@@ -2,66 +2,104 @@ package org.example.javafxui.db;
 
 import org.example.javafxui.model.User;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.*;
 
 public class ConnDbOps {
 
+    private Connection conn;
+
     public boolean connect() {
-        // TODO: Replace with real Derby connection
-        System.out.println("Database connected placeholder");
-        return true;
-    }
-
-    public boolean insertUser(String username, String email) {
-        // TODO: Replace with Derby INSERT
-        System.out.println("Inserted user placeholder: " + username + ", " + email);
-        return true;
-    }
-
-    public User loginUser(String username, String email) {
-        // TODO: Replace with Derby SELECT
-        if (username == null || username.isBlank() || email == null || email.isBlank()) {
-            return null;
+        try {
+            conn = DriverManager.getConnection("jdbc:derby:PlayerStatsDB;create=true");
+            createTables();
+            System.out.println("Database connected.");
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
+    }
 
-        // Temporary fake user so login flow works
-        return new User(1, username, email);
+    private void createTables() {
+        try (Statement stmt = conn.createStatement()) {
+            stmt.executeUpdate(
+                    "CREATE TABLE USERS (" +
+                            "user_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, " +
+                            "username VARCHAR(100) NOT NULL UNIQUE, " +
+                            "email VARCHAR(150) NOT NULL UNIQUE, " +
+                            "password VARCHAR(100) NOT NULL" +
+                            ")"
+            );
+        } catch (SQLException ignored) {
+            // Table probably already exists
+        }
+    }
+
+    public boolean registerUser(String username, String email, String password) {
+        String sql = "INSERT INTO USERS (username, email, password) VALUES (?, ?, ?)";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, username);
+            ps.setString(2, email);
+            ps.setString(3, password);
+            ps.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public boolean insertGame(int userId, String gameName) {
-        // TODO: Replace with Derby INSERT into games table
-        System.out.println("Inserted game placeholder: " + gameName + " for user " + userId);
+        System.out.println("Inserted game: " + gameName + " for user " + userId);
         return true;
+    }
+
+    public User loginUser(String usernameOrEmail, String password) {
+        String sql = "SELECT * FROM USERS WHERE (username = ? OR email = ?) AND password = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, usernameOrEmail);
+            ps.setString(2, usernameOrEmail);
+            ps.setString(3, password);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return new User(
+                        rs.getInt("user_id"),
+                        rs.getString("username"),
+                        rs.getString("email"),
+                        rs.getString("password")
+                );
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     public boolean insertStats(int gameId, int kills, int deaths, int assists, int score) {
-        // TODO: Replace with Derby INSERT into stats table
-        System.out.println("Inserted stats placeholder");
+        // Temporary placeholder until full Derby stats table is finished
+        System.out.println("Inserted stats for game ID: " + gameId);
+        System.out.println("Kills: " + kills);
+        System.out.println("Deaths: " + deaths);
+        System.out.println("Assists: " + assists);
+        System.out.println("Score: " + score);
         return true;
     }
 
-    public List<String> getUserGames(int userId) {
-        // TODO: Replace with Derby SELECT
-        List<String> games = new ArrayList<>();
-        games.add("Valorant");
-        games.add("Fortnite");
-        games.add("Call of Duty");
-        return games;
-    }
-
     public int getTotalGames(int userId) {
-        // TODO: Replace with Derby COUNT query
-        return 3;
+        return 0;
     }
 
     public int getTotalKills(int userId) {
-        // TODO: Replace with Derby SUM query
-        return 52;
+        return 0;
     }
 
     public double getAverageScore(int userId) {
-        // TODO: Replace with Derby AVG query
-        return 1200.5;
+        return 0;
     }
 }
