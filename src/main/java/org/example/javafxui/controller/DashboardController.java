@@ -53,34 +53,46 @@ public class DashboardController {
         int userId = Session.currentUser.id;
 
         welcomeLabel.setText("Welcome, " + Session.currentUser.username);
-        totalGamesLabel.setText("Total Games: " + Session.db.getTotalGames(userId));
-        totalKillsLabel.setText("Total Kills: " + Session.db.getTotalKills(userId));
-        averageScoreLabel.setText("Average Score: " + Session.db.getAverageScore(userId));
+        totalGamesLabel.setText(String.valueOf(Session.db.getTotalGames(userId)));
+        totalKillsLabel.setText(String.valueOf(Session.db.getTotalKills(userId)));
+        averageScoreLabel.setText(String.format("%.1f", Session.db.getAverageScore(userId)));
 
         gamesListView.getItems().setAll(Session.db.getUserGamesWithIds(userId));
         loadCharts();
     }
 
     @FXML
-    public void goToAddGame(ActionEvent e) throws Exception {
-        load(e, "/view/AddGame.fxml");
+    public void goToAddGame(ActionEvent event) throws Exception {
+        load(event, "/view/AddGame.fxml");
     }
 
     @FXML
-    public void goToStats(ActionEvent e) throws Exception {
-        load(e, "/view/Stats.fxml");
+    public void goToStats(ActionEvent event) throws Exception {
+        load(event, "/view/Stats.fxml");
     }
 
     @FXML
-    public void logout(ActionEvent e) throws Exception {
+    public void goToReport(ActionEvent event) throws Exception {
+        load(event, "/view/Report.fxml");
+    }
+
+    @FXML
+    public void logout(ActionEvent event) throws Exception {
         Session.currentUser = null;
-        load(e, "/view/Login.fxml");
+        load(event, "/view/Login.fxml");
     }
 
-    private void load(ActionEvent e, String path) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource(path));
-        Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-        stage.setScene(new Scene(root));
+    private void load(ActionEvent event, String fxmlPath) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
+
+        Scene scene = new Scene(root, 900, 600);
+        scene.getStylesheets().add(
+                getClass().getResource("/styles/app.css").toExternalForm()
+        );
+
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
     }
 
     private void loadCharts() {

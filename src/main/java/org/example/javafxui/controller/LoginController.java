@@ -42,7 +42,7 @@ public class LoginController {
         }
 
         Session.currentUser = user;
-        goToDashboard(event);
+        loadScene(event, "/view/Dashboard.fxml");
     }
 
     @FXML
@@ -56,5 +56,18 @@ public class LoginController {
         Parent root = FXMLLoader.load(getClass().getResource("/view/Dashboard.fxml"));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(new Scene(root, 900, 600));
+    }
+
+    private void loadScene(ActionEvent event, String fxmlPath) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
+
+        Scene scene = new Scene(root, 900, 600);
+        scene.getStylesheets().add(
+                getClass().getResource("/styles/app.css").toExternalForm()
+        );
+
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
     }
 }
