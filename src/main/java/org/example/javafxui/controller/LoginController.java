@@ -1,32 +1,60 @@
 package org.example.javafxui.controller;
+
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import org.example.javafxui.Session;
 import org.example.javafxui.model.User;
-import javafx.fxml.FXML;
-import javafx.scene.control.*;
 
 public class LoginController {
 
-    @FXML private TextField usernameField;
-    @FXML private TextField emailField;
-    @FXML private Label messageLabel;
+    @FXML
+    private TextField loginField;
 
     @FXML
-    public void handleRegister() {
-        String username = usernameField.getText();
-        String email = emailField.getText();
+    private PasswordField passwordField;
 
-        if (username.isEmpty() || email.isEmpty()) {
-            messageLabel.setText("Enter username and email");
+    @FXML
+    private Label messageLabel;
+
+    @FXML
+    public void handleLogin(ActionEvent event) throws Exception {
+        String login = loginField.getText().trim();
+        String password = passwordField.getText();
+
+        if (login.isEmpty() || password.isEmpty()) {
+            messageLabel.setText("Enter username/email and password.");
             return;
         }
 
-        boolean success = Session.db.insertUser(username, email);
+        User user = Session.db.loginUser(login, password);
 
-        if (success) {
-            messageLabel.setText("Registered!");
-            Session.currentUser = new User(1, username, email);
-        } else {
-            messageLabel.setText("Error registering");
+        if (user == null) {
+            messageLabel.setText("Invalid login credentials.");
+            return;
         }
+
+        Session.currentUser = user;
+        goToDashboard(event);
+    }
+
+    @FXML
+    public void goToRegister(ActionEvent event) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/view/Register.fxml"));
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(new Scene(root, 900, 600));
+    }
+
+    private void goToDashboard(ActionEvent event) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/view/Dashboard.fxml"));
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(new Scene(root, 900, 600));
     }
 }

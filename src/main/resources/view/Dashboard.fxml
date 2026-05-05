@@ -13,5 +13,7 @@
     <Button text="Add Game" onAction="#goToAddGame"/>
     <Button text="Add Stats" onAction="#goToStats"/>
     <Button text="Logout" onAction="#logout"/>
-
+    <Label fx:id="totalGamesLabel" text="Total Games: 0"/>
+    <Label fx:id="totalKillsLabel" text="Total Kills: 0"/>
+    <Label fx:id="averageScoreLabel" text="Average Score: 0"/>
 </VBox>

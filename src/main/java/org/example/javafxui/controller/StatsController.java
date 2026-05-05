@@ -23,7 +23,7 @@ public class StatsController {
             int assists = Integer.parseInt(assistsField.getText());
             int score = Integer.parseInt(scoreField.getText());
 
-            boolean success = Session.db.addStats(
+            boolean success = Session.db.insertStats(
                     gameId, kills, deaths, assists, score
             );
 

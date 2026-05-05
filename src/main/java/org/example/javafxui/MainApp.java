@@ -1,4 +1,5 @@
 package org.example.javafxui;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -23,9 +24,5 @@ public class MainApp extends Application {
         stage.setTitle("Player Stats Tracker");
         stage.setScene(scene);
         stage.show();
-    }
-
-    public static void main(String[] args) {
-        launch();
     }
 }
