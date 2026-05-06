@@ -2,7 +2,7 @@ package org.example.javafxui.db;
 
 import org.example.javafxui.model.Stats;
 import org.example.javafxui.model.User;
-
+import org.example.javafxui.controller.StatsController.GameOption;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -486,6 +486,30 @@ public class ConnDbOps {
         }
 
         return data;
+    }
+
+    public List<GameOption> getUserGameOptions(int userId) {
+        List<GameOption> games = new ArrayList<>();
+
+        String sql = "SELECT game_id, game_name FROM GAMES WHERE user_id = ? ORDER BY game_id";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                games.add(new GameOption(
+                        rs.getInt("game_id"),
+                        rs.getString("game_name")
+                ));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return games;
     }
 
     public double getKDRatio(int userId) {

@@ -3,23 +3,28 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox spacing="20" alignment="CENTER"
+<VBox spacing="18" alignment="CENTER"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="org.example.javafxui.controller.StatsController"
-      stylesheets="@/styles/app.css"
       styleClass="root-pane">
 
-    <Label text="Add Stats" styleClass="title"/>
+    <Label text="Add Match Stats" styleClass="title"/>
 
-    <ComboBox fx:id="gameDropdown" promptText="Select Game"/>
-    <TextField fx:id="killsField" promptText="Kills"/>
-    <TextField fx:id="deathsField" promptText="Deaths"/>
-    <TextField fx:id="assistsField" promptText="Assists"/>
-    <TextField fx:id="scoreField" promptText="Score"/>
+    <VBox spacing="12" alignment="CENTER" styleClass="panel">
+        <Label text="Select Game" styleClass="section-title"/>
+        <ComboBox fx:id="gameComboBox" promptText="Choose a game" maxWidth="360"/>
 
-    <Button text="Save Stats" onAction="#handleSaveStats"/>
-    <Button text="Back" onAction="#backToDashboard"/>
+        <TextField fx:id="killsField" promptText="Kills" maxWidth="360"/>
+        <TextField fx:id="deathsField" promptText="Deaths" maxWidth="360"/>
+        <TextField fx:id="assistsField" promptText="Assists" maxWidth="360"/>
+        <TextField fx:id="scoreField" promptText="Score" maxWidth="360"/>
 
-    <Label fx:id="messageLabel"/>
+        <HBox spacing="12" alignment="CENTER">
+            <Button text="Save Stats" onAction="#handleSaveStats"/>
+            <Button text="Back" onAction="#backToDashboard"/>
+        </HBox>
+
+        <Label fx:id="messageLabel" styleClass="hint-label"/>
+    </VBox>
 
 </VBox>
