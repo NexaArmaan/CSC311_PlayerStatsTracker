@@ -316,7 +316,7 @@ public class ConnDbOps {
             return false;
         }
     }
-    
+
 
     // ---------------------------
     // STATS METHODS
@@ -348,30 +348,46 @@ public class ConnDbOps {
             ps.setInt(3, assists);
             ps.setInt(4, score);
             ps.setInt(5, statId);
+
             ps.executeUpdate();
             return true;
+
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
 
-    public boolean deleteStats(int statId) {
-        String sql = "DELETE FROM STATS WHERE stat_id = ?";
+
+    public String[] getLatestStatsForGame(int gameId) {
+        String sql =
+                "SELECT stat_id, kills, deaths, assists, score " +
+                        "FROM STATS " +
+                        "WHERE game_id = ? " +
+                        "ORDER BY stat_id DESC " +
+                        "FETCH FIRST 1 ROW ONLY";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, statId);
-            ps.executeUpdate();
-            return true;
+            ps.setInt(1, gameId);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return new String[]{
+                        String.valueOf(rs.getInt("stat_id")),
+                        String.valueOf(rs.getInt("kills")),
+                        String.valueOf(rs.getInt("deaths")),
+                        String.valueOf(rs.getInt("assists")),
+                        String.valueOf(rs.getInt("score"))
+                };
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
-    }
 
-    // ---------------------------
-    // DASHBOARD SUMMARY METHODS
-    // ---------------------------
+        return null;
+    }
 
     public int getTotalGames(int userId) {
         String sql = "SELECT COUNT(*) AS total_games FROM GAMES WHERE user_id = ?";

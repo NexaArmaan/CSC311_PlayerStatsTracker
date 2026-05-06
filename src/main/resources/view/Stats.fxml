@@ -20,7 +20,9 @@
         <TextField fx:id="scoreField" promptText="Score" maxWidth="360"/>
 
         <HBox spacing="12" alignment="CENTER">
-            <Button text="Save Stats" onAction="#handleSaveStats"/>
+            <Button text="Save New Stats" onAction="#handleSaveStats"/>
+            <Button text="Load Existing Stats" onAction="#loadExistingStats"/>
+            <Button text="Update Stats" onAction="#handleUpdateStats"/>
             <Button text="Back" onAction="#backToDashboard"/>
         </HBox>
 
