@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="18" alignment="CENTER"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.example.javafxui.controller.LoginController"
+      stylesheets="@/styles/app.css"
+      styleClass="root-pane">
+
+    <Label text="Player Stats Tracker" styleClass="title"/>
+
+    <TextField fx:id="loginField" promptText="Username or Email" maxWidth="350"/>
+    <PasswordField fx:id="passwordField" promptText="Password" maxWidth="350"/>
+
+    <HBox spacing="12" alignment="CENTER">
+        <Button text="Login" onAction="#handleLogin"/>
+        <Button text="Create Account" onAction="#goToRegister"/>
+    </HBox>
+
+    <Label fx:id="messageLabel"/>
+
+</VBox>

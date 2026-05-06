@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="20" alignment="CENTER"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.example.javafxui.controller.ReportController"
+      styleClass="root-pane">
+
+    <Label text="Performance Report" styleClass="title"/>
+    <Label fx:id="summaryLabel"
+           text="Summary will appear here."
+           wrapText="true"
+           maxWidth="760"
+           styleClass="report-summary"/>
+
+    <HBox spacing="18" alignment="CENTER">
+        <VBox alignment="CENTER" styleClass="stat-card">
+            <Label text="Total Deaths" styleClass="card-title"/>
+            <Label fx:id="totalDeathsLabel" text="0" styleClass="card-value"/>
+        </VBox>
+
+        <VBox alignment="CENTER" styleClass="stat-card">
+            <Label text="Total Assists" styleClass="card-title"/>
+            <Label fx:id="totalAssistsLabel" text="0" styleClass="card-value"/>
+        </VBox>
+
+        <VBox alignment="CENTER" styleClass="stat-card">
+            <Label text="Best Score" styleClass="card-title"/>
+            <Label fx:id="bestScoreLabel" text="0" styleClass="card-value"/>
+        </VBox>
+
+        <VBox alignment="CENTER" styleClass="stat-card">
+            <Label text="K/D Ratio" styleClass="card-title"/>
+            <Label fx:id="kdRatioLabel" text="0.00" styleClass="card-value"/>
+        </VBox>
+    </HBox>
+
+    <VBox spacing="14" alignment="CENTER" styleClass="panel">
+        <Label text="Kills, Deaths, and Assists by Game" styleClass="section-title"/>
+
+        <BarChart fx:id="kdaChart" prefWidth="760" prefHeight="230">
+            <xAxis>
+                <CategoryAxis label="Game"/>
+            </xAxis>
+            <yAxis>
+                <NumberAxis label="Count"/>
+            </yAxis>
+        </BarChart>
+    </VBox>
+
+    <VBox spacing="14" alignment="CENTER" styleClass="panel">
+        <Label text="Score by Game" styleClass="section-title"/>
+
+        <LineChart fx:id="scoreChart" prefWidth="760" prefHeight="210">
+            <xAxis>
+                <CategoryAxis label="Game"/>
+            </xAxis>
+            <yAxis>
+                <NumberAxis label="Score"/>
+            </yAxis>
+        </LineChart>
+    </VBox>
+
+    <Button text="Back to Dashboard" onAction="#backToDashboard"/>
+
+</VBox>

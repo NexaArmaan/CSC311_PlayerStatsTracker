@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="18" alignment="CENTER"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.example.javafxui.controller.StatsController"
+      styleClass="root-pane">
+
+    <Label text="Add Match Stats" styleClass="title"/>
+
+    <VBox spacing="12" alignment="CENTER" styleClass="panel">
+        <Label text="Select Game" styleClass="section-title"/>
+        <ComboBox fx:id="gameComboBox" promptText="Choose a game" maxWidth="360"/>
+
+        <TextField fx:id="killsField" promptText="Kills" maxWidth="360"/>
+        <TextField fx:id="deathsField" promptText="Deaths" maxWidth="360"/>
+        <TextField fx:id="assistsField" promptText="Assists" maxWidth="360"/>
+        <TextField fx:id="scoreField" promptText="Score" maxWidth="360"/>
+
+        <HBox spacing="12" alignment="CENTER">
+            <Button text="Save New Stats" onAction="#handleSaveStats"/>
+            <Button text="Load Existing Stats" onAction="#loadExistingStats"/>
+            <Button text="Update Stats" onAction="#handleUpdateStats"/>
+            <Button text="Back" onAction="#backToDashboard"/>
+        </HBox>
+
+        <Label fx:id="messageLabel" styleClass="hint-label"/>
+    </VBox>
+
+</VBox>
