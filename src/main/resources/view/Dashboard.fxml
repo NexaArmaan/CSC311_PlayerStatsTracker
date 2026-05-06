@@ -8,7 +8,8 @@
       fx:controller="org.example.javafxui.controller.DashboardController"
       styleClass="root-pane">
 
-    <Label fx:id="welcomeLabel" text="Welcome" styleClass="title"/>
+    <Label text="Player Stats Tracker" styleClass="app-title"/>
+    <Label fx:id="welcomeLabel" text="Welcome" styleClass="subtitle"/>
 
     <HBox spacing="22" alignment="CENTER">
         <VBox alignment="CENTER" styleClass="stat-card">
@@ -57,7 +58,12 @@
                 <Label fx:id="selectedKdLabel" text="0.00" styleClass="detail-value" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
             </GridPane>
 
-            <Button text="Delete Selected Game" onAction="#deleteSelectedGame" styleClass="danger-button"/>
+            <TextField fx:id="editGameNameField" promptText="New game name" maxWidth="260"/>
+
+            <HBox spacing="12" alignment="CENTER">
+                <Button text="Edit Game Name" onAction="#editSelectedGame"/>
+                <Button text="Delete Selected Game" onAction="#deleteSelectedGame" styleClass="danger-button"/>
+            </HBox>
         </VBox>
 
     </HBox>

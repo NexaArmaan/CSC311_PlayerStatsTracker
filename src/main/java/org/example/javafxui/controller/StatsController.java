@@ -35,6 +35,8 @@ public class StatsController {
     @FXML
     private Label messageLabel;
 
+    private int loadedStatId = -1;
+
     @FXML
     public void initialize() {
         if (Session.currentUser == null) {
@@ -99,6 +101,72 @@ public class StatsController {
         }
     }
 
+    @FXML
+    public void loadExistingStats() {
+        GameOption selectedGame = gameComboBox.getValue();
+
+        if (selectedGame == null) {
+            messageLabel.setText("Please select a game first.");
+            showAlert(Alert.AlertType.WARNING, "No Game Selected", "Please select a game first.");
+            return;
+        }
+
+        String[] stats = Session.db.getLatestStatsForGame(selectedGame.getGameId());
+
+        if (stats == null) {
+            loadedStatId = -1;
+            messageLabel.setText("No stats found for this game yet.");
+            showAlert(Alert.AlertType.INFORMATION, "No Stats Found", "This game does not have stats yet. Use Save New Stats first.");
+            return;
+        }
+
+        loadedStatId = Integer.parseInt(stats[0]);
+
+        killsField.setText(stats[1]);
+        deathsField.setText(stats[2]);
+        assistsField.setText(stats[3]);
+        scoreField.setText(stats[4]);
+
+        messageLabel.setText("Loaded latest stats for " + selectedGame.getGameName() + ".");
+    }
+
+    @FXML
+    public void handleUpdateStats() {
+        if (loadedStatId <= 0) {
+            messageLabel.setText("Load existing stats before updating.");
+            showAlert(Alert.AlertType.WARNING, "No Stats Loaded", "Please load existing stats before updating.");
+            return;
+        }
+
+        try {
+            int kills = Integer.parseInt(killsField.getText().trim());
+            int deaths = Integer.parseInt(deathsField.getText().trim());
+            int assists = Integer.parseInt(assistsField.getText().trim());
+            int score = Integer.parseInt(scoreField.getText().trim());
+
+            if (kills < 0 || deaths < 0 || assists < 0 || score < 0) {
+                messageLabel.setText("Stats cannot be negative.");
+                showAlert(Alert.AlertType.WARNING, "Invalid Stats", "Stats cannot be negative.");
+                return;
+            }
+
+            boolean success = Session.db.updateStats(loadedStatId, kills, deaths, assists, score);
+
+            if (success) {
+                messageLabel.setText("Stats updated successfully.");
+                showAlert(Alert.AlertType.INFORMATION, "Stats Updated", "Stats updated successfully.");
+            } else {
+                messageLabel.setText("Error updating stats.");
+                showAlert(Alert.AlertType.ERROR, "Update Failed", "Stats could not be updated.");
+            }
+
+        } catch (NumberFormatException e) {
+            messageLabel.setText("Enter valid numbers only.");
+            showAlert(Alert.AlertType.WARNING, "Invalid Input", "Please enter valid numbers only.");
+        }
+    }
+
+    
     @FXML
     public void backToDashboard(ActionEvent event) throws Exception {
         loadScene(event, "/view/Dashboard.fxml");

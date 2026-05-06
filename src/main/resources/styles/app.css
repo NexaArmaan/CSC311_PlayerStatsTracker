@@ -158,3 +158,14 @@
     -fx-font-size: 15px;
     -fx-line-spacing: 4px;
 }
+
+.app-title {
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.subtitle {
+    -fx-font-size: 18px;
+    -fx-text-fill: #c7d2fe;
+}
