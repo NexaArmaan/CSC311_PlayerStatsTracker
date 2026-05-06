@@ -81,4 +81,8 @@ public class ConnDbOps {
             // Table probably already exists
         }
     }
+    public Connection getConnection() {
+        ensureConnected();
+        return conn;
+    }
 }

@@ -1,6 +1,7 @@
 package org.example.javafxui.service;
 
 import org.example.javafxui.db.ConnDbOps;
+import org.example.javafxui.Session;
 
 import java.util.List;
 
@@ -22,14 +23,14 @@ public class GameService {
 
         String trimmed = gameName.trim();
 
-        List<String> existingGames = db.getUserGames(userId);
+        List<String> existingGames = Session.game.getUserGames(userId);
         for (String game : existingGames) {
             if(game.equalsIgnoreCase(trimmed)) {
                 throw new IllegalArgumentException("You already have a game with the same name '" + trimmed + "'.");
             }
         }
 
-        boolean success = db.insertGame(userId, gameName.trim());
+        boolean success = Session.game.insertGame(userId, gameName.trim());
 
         if (!success) {
             throw new RuntimeException("Could not save game.");

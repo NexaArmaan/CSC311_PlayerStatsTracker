@@ -57,7 +57,7 @@ public class RegisterController {
             return;
         }
 
-        boolean success = Session.db.registerUser(username, email, password);
+        boolean success = Session.user.registerUser(username, email, password);
 
         if (success) {
             showAlert(Alert.AlertType.INFORMATION, "Account Created", "Your account was created successfully. Please log in.");

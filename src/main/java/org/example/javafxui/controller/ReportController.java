@@ -52,10 +52,10 @@ public class ReportController {
 
         loadSummaryText(userId);
 
-        totalDeathsLabel.setText(String.valueOf(Session.db.getTotalDeaths(userId)));
-        totalAssistsLabel.setText(String.valueOf(Session.db.getTotalAssists(userId)));
-        bestScoreLabel.setText(String.valueOf(Session.db.getBestScore(userId)));
-        kdRatioLabel.setText(String.format("%.2f", Session.db.getKDRatio(userId)));
+        totalDeathsLabel.setText(String.valueOf(Session.stats.getTotalDeaths(userId)));
+        totalAssistsLabel.setText(String.valueOf(Session.stats.getTotalAssists(userId)));
+        bestScoreLabel.setText(String.valueOf(Session.stats.getBestScore(userId)));
+        kdRatioLabel.setText(String.format("%.2f", Session.stats.getKDRatio(userId)));
 
         loadKdaChart(userId);
         loadScoreChart(userId);
@@ -75,7 +75,7 @@ public class ReportController {
         XYChart.Series<String, Number> assistsSeries = new XYChart.Series<>();
         assistsSeries.setName("Assists");
 
-        List<String[]> rows = Session.db.getStatsChartData(userId);
+        List<String[]> rows = Session.analytics.getStatsChartData(userId);
 
         for (String[] row : rows) {
             String gameName = row[0];
@@ -99,7 +99,7 @@ public class ReportController {
         XYChart.Series<String, Number> scoreSeries = new XYChart.Series<>();
         scoreSeries.setName("Score");
 
-        List<String[]> rows = Session.db.getStatsChartData(userId);
+        List<String[]> rows = Session.analytics.getStatsChartData(userId);
 
         for (String[] row : rows) {
             String gameName = row[0];
@@ -134,13 +134,13 @@ public class ReportController {
     }
 
     private void loadSummaryText(int userId) {
-        int totalGames = Session.db.getTotalGames(userId);
-        int totalKills = Session.db.getTotalKills(userId);
-        int totalDeaths = Session.db.getTotalDeaths(userId);
-        int totalAssists = Session.db.getTotalAssists(userId);
-        int bestScore = Session.db.getBestScore(userId);
-        double kdRatio = Session.db.getKDRatio(userId);
-        double averageScore = Session.db.getAverageScore(userId);
+        int totalGames = Session.stats.getTotalGames(userId);
+        int totalKills = Session.stats.getTotalKills(userId);
+        int totalDeaths = Session.stats.getTotalDeaths(userId);
+        int totalAssists = Session.stats.getTotalAssists(userId);
+        int bestScore = Session.stats.getBestScore(userId);
+        double kdRatio = Session.stats.getKDRatio(userId);
+        double averageScore = Session.stats.getAverageScore(userId);
 
         String summary = String.format(
                 "You have tracked %d game(s), with %d total kills, %d deaths, and %d assists. " +
