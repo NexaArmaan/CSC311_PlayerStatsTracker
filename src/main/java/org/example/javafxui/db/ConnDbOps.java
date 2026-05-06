@@ -303,7 +303,7 @@ public class ConnDbOps {
         }
     }
 
-    public boolean updateGame(int gameId, String newName) {
+    public boolean updateGameName(int gameId, String newName) {
         String sql = "UPDATE GAMES SET game_name = ? WHERE game_id = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -316,6 +316,7 @@ public class ConnDbOps {
             return false;
         }
     }
+    
 
     // ---------------------------
     // STATS METHODS

@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import org.example.javafxui.Session;
+import javafx.scene.control.TextField;
 
 import java.util.Optional;
 
@@ -46,6 +47,9 @@ public class DashboardController {
 
     @FXML
     private Label selectedScoreLabel;
+
+    @FXML
+    private TextField editGameNameField;
 
     @FXML
     private Label selectedKdLabel;
@@ -109,6 +113,7 @@ public class DashboardController {
         }
 
         selectedGameLabel.setText(details[0]);
+        editGameNameField.setText(details[0]);
         selectedKillsLabel.setText(details[1]);
         selectedDeathsLabel.setText(details[2]);
         selectedAssistsLabel.setText(details[3]);
@@ -119,6 +124,7 @@ public class DashboardController {
     private void clearGameDetails() {
         selectedGameId = -1;
         selectedGameLabel.setText("No game selected");
+        editGameNameField.clear();
         selectedKillsLabel.setText("0");
         selectedDeathsLabel.setText("0");
         selectedAssistsLabel.setText("0");
@@ -149,6 +155,30 @@ public class DashboardController {
             } else {
                 showAlert(Alert.AlertType.ERROR, "Delete Failed", "Could not delete the selected game.");
             }
+        }
+    }
+
+    @FXML
+    public void editSelectedGame() {
+        if (selectedGameId <= 0) {
+            showAlert(Alert.AlertType.WARNING, "No Game Selected", "Please select a game before editing.");
+            return;
+        }
+
+        String newName = editGameNameField.getText().trim();
+
+        if (newName.isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Invalid Name", "Game name cannot be empty.");
+            return;
+        }
+
+        boolean success = Session.db.updateGameName(selectedGameId, newName);
+
+        if (success) {
+            showAlert(Alert.AlertType.INFORMATION, "Game Updated", "Game name updated successfully.");
+            refreshDashboard();
+        } else {
+            showAlert(Alert.AlertType.ERROR, "Update Failed", "Could not update the game name.");
         }
     }
 
