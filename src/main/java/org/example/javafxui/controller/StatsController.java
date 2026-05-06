@@ -44,7 +44,7 @@ public class StatsController {
             return;
         }
 
-        List<GameOption> games = Session.db.getUserGameOptions(Session.currentUser.id);
+        List<GameOption> games = Session.analytics.getUserGameOptions(Session.currentUser.id);
         gameComboBox.getItems().setAll(games);
 
         if (!games.isEmpty()) {
@@ -72,7 +72,7 @@ public class StatsController {
                 return;
             }
 
-            boolean success = Session.db.insertStats(
+            boolean success = Session.stats.insertStats(
                     selectedGame.getGameId(),
                     kills,
                     deaths,
@@ -111,7 +111,7 @@ public class StatsController {
             return;
         }
 
-        String[] stats = Session.db.getLatestStatsForGame(selectedGame.getGameId());
+        String[] stats = Session.stats.getLatestStatsForGame(selectedGame.getGameId());
 
         if (stats == null) {
             loadedStatId = -1;
@@ -150,7 +150,7 @@ public class StatsController {
                 return;
             }
 
-            boolean success = Session.db.updateStats(loadedStatId, kills, deaths, assists, score);
+            boolean success = Session.stats.updateStats(loadedStatId, kills, deaths, assists, score);
 
             if (success) {
                 messageLabel.setText("Stats updated successfully.");

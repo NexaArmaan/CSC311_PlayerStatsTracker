@@ -80,11 +80,11 @@ public class DashboardController {
         int userId = Session.currentUser.id;
 
         welcomeLabel.setText("Welcome, " + Session.currentUser.username);
-        totalGamesLabel.setText(String.valueOf(Session.db.getTotalGames(userId)));
-        totalKillsLabel.setText(String.valueOf(Session.db.getTotalKills(userId)));
-        averageScoreLabel.setText(String.format("%.1f", Session.db.getAverageScore(userId)));
+        totalGamesLabel.setText(String.valueOf(Session.stats.getTotalGames(userId)));
+        totalKillsLabel.setText(String.valueOf(Session.stats.getTotalKills(userId)));
+        averageScoreLabel.setText(String.format("%.1f", Session.stats.getAverageScore(userId)));
 
-        gamesListView.getItems().setAll(Session.db.getUserGamesWithIds(userId));
+        gamesListView.getItems().setAll(Session.game.getUserGamesWithIds(userId));
 
         clearGameDetails();
     }
@@ -105,7 +105,7 @@ public class DashboardController {
             return;
         }
 
-        String[] details = Session.db.getGameDetails(gameId);
+        String[] details = Session.game.getGameDetails(gameId);
 
         if (details == null) {
             clearGameDetails();
@@ -147,7 +147,7 @@ public class DashboardController {
         Optional<ButtonType> result = confirmAlert.showAndWait();
 
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            boolean success = Session.db.deleteGameAndStats(selectedGameId);
+            boolean success = Session.game.deleteGameAndStats(selectedGameId);
 
             if (success) {
                 showAlert(Alert.AlertType.INFORMATION, "Game Deleted", "The selected game was deleted successfully.");
@@ -172,7 +172,7 @@ public class DashboardController {
             return;
         }
 
-        boolean success = Session.db.updateGameName(selectedGameId, newName);
+        boolean success = Session.game.updateGameName(selectedGameId, newName);
 
         if (success) {
             showAlert(Alert.AlertType.INFORMATION, "Game Updated", "Game name updated successfully.");

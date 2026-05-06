@@ -34,7 +34,7 @@ public class LoginController {
             return;
         }
 
-        User user = Session.db.loginUser(login, password);
+        User user = Session.user.loginUser(login, password);
 
         if (user == null) {
             messageLabel.setText("Invalid login credentials.");
