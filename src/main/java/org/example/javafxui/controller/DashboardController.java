@@ -6,16 +6,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.chart.BarChart;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.XYChart;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import org.example.javafxui.Session;
-import org.example.javafxui.model.Stats;
 
-import java.util.List;
+import java.util.Optional;
 
 public class DashboardController {
 
@@ -35,21 +33,46 @@ public class DashboardController {
     private ListView<String> gamesListView;
 
     @FXML
-    private BarChart<String, Number> kdaChart;
+    private Label selectedGameLabel;
 
     @FXML
-    private LineChart<String, Number> scoreChart;
+    private Label selectedKillsLabel;
+
+    @FXML
+    private Label selectedDeathsLabel;
+
+    @FXML
+    private Label selectedAssistsLabel;
+
+    @FXML
+    private Label selectedScoreLabel;
+
+    @FXML
+    private Label selectedKdLabel;
+
+    private int selectedGameId = -1;
 
     @FXML
     public void initialize() {
         if (Session.currentUser == null) {
             welcomeLabel.setText("Welcome");
-            totalGamesLabel.setText("Total Games: 0");
-            totalKillsLabel.setText("Total Kills: 0");
-            averageScoreLabel.setText("Average Score: 0");
+            totalGamesLabel.setText("0");
+            totalKillsLabel.setText("0");
+            averageScoreLabel.setText("0");
             return;
         }
 
+        refreshDashboard();
+
+        gamesListView.getSelectionModel().selectedItemProperty().addListener((obs, oldValue, newValue) -> {
+            if (newValue != null) {
+                selectedGameId = extractGameId(newValue);
+                showGameDetails(selectedGameId);
+            }
+        });
+    }
+
+    private void refreshDashboard() {
         int userId = Session.currentUser.id;
 
         welcomeLabel.setText("Welcome, " + Session.currentUser.username);
@@ -58,83 +81,120 @@ public class DashboardController {
         averageScoreLabel.setText(String.format("%.1f", Session.db.getAverageScore(userId)));
 
         gamesListView.getItems().setAll(Session.db.getUserGamesWithIds(userId));
-        loadCharts();
+
+        clearGameDetails();
+    }
+
+    private int extractGameId(String gameText) {
+        try {
+            // Expected format: "ID 1 - Valorant"
+            String[] parts = gameText.split(" ");
+            return Integer.parseInt(parts[1]);
+        } catch (Exception e) {
+            return -1;
+        }
+    }
+
+    private void showGameDetails(int gameId) {
+        if (gameId <= 0) {
+            clearGameDetails();
+            return;
+        }
+
+        String[] details = Session.db.getGameDetails(gameId);
+
+        if (details == null) {
+            clearGameDetails();
+            return;
+        }
+
+        selectedGameLabel.setText(details[0]);
+        selectedKillsLabel.setText(details[1]);
+        selectedDeathsLabel.setText(details[2]);
+        selectedAssistsLabel.setText(details[3]);
+        selectedScoreLabel.setText(details[4]);
+        selectedKdLabel.setText(details[5]);
+    }
+
+    private void clearGameDetails() {
+        selectedGameId = -1;
+        selectedGameLabel.setText("No game selected");
+        selectedKillsLabel.setText("0");
+        selectedDeathsLabel.setText("0");
+        selectedAssistsLabel.setText("0");
+        selectedScoreLabel.setText("0");
+        selectedKdLabel.setText("0.00");
+    }
+
+    @FXML
+    public void deleteSelectedGame() {
+        if (selectedGameId <= 0) {
+            showAlert(Alert.AlertType.WARNING, "No Game Selected", "Please select a game before deleting.");
+            return;
+        }
+
+        Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmAlert.setTitle("Delete Game");
+        confirmAlert.setHeaderText("Are you sure you want to delete this game?");
+        confirmAlert.setContentText("This will also delete all stats connected to this game.");
+
+        Optional<ButtonType> result = confirmAlert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            boolean success = Session.db.deleteGameAndStats(selectedGameId);
+
+            if (success) {
+                showAlert(Alert.AlertType.INFORMATION, "Game Deleted", "The selected game was deleted successfully.");
+                refreshDashboard();
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Delete Failed", "Could not delete the selected game.");
+            }
+        }
     }
 
     @FXML
     public void goToAddGame(ActionEvent event) throws Exception {
-        load(event, "/view/AddGame.fxml");
+        loadScene(event, "/view/AddGame.fxml");
     }
 
     @FXML
     public void goToStats(ActionEvent event) throws Exception {
-        load(event, "/view/Stats.fxml");
+        loadScene(event, "/view/Stats.fxml");
     }
 
     @FXML
     public void goToReport(ActionEvent event) throws Exception {
-        load(event, "/view/Report.fxml");
+        loadScene(event, "/view/Report.fxml");
     }
 
     @FXML
     public void logout(ActionEvent event) throws Exception {
         Session.currentUser = null;
-        load(event, "/view/Login.fxml");
+        loadScene(event, "/view/Login.fxml");
     }
 
-    private void load(ActionEvent event, String fxmlPath) throws Exception {
+    private void loadScene(ActionEvent event, String fxmlPath) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
 
-        Scene scene = new Scene(root, 900, 600);
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+        Scene scene = new Scene(root, 1500, 1000);
         scene.getStylesheets().add(
                 getClass().getResource("/styles/app.css").toExternalForm()
         );
 
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(scene);
+        stage.setWidth(1500);
+        stage.setHeight(1000);
+        stage.centerOnScreen();
         stage.show();
     }
 
-    private void loadCharts() {
-        List<Stats> allStats = Session.db.getUserStats(Session.currentUser.id);
-        List<String> allLabels = Session.db.getUserGamesWithIds(Session.currentUser.id);
-
-        final int MAX_GAMES = 10;
-        int start = Math.max(0, allStats.size() - MAX_GAMES);
-
-        List<Stats> stats = allStats.subList(start, allStats.size());
-        List<String> gameLabels = allLabels.subList(Math.max(0, allLabels.size() - MAX_GAMES), allLabels.size());
-
-        XYChart.Series<String, Number> kills = new XYChart.Series<>();
-        XYChart.Series<String, Number> deaths = new XYChart.Series<>();
-        XYChart.Series<String, Number> assists = new XYChart.Series<>();
-        kills.setName("Kills");
-        deaths.setName("Deaths");
-        assists.setName("Assists");
-
-        XYChart.Series<String, Number> scoreSeries = new XYChart.Series<>();
-        scoreSeries.setName("Score");
-
-        for (int i = 0; i < stats.size(); i++) {
-            Stats stat = stats.get(i);
-            String label;
-            if (i < gameLabels.size()) {
-                String full = gameLabels.get(i);
-                int dashIndex = full.indexOf(" - ");
-                label = (dashIndex != -1) ? full.substring(dashIndex + 3) : full;
-            } else {
-                label = "Game " + (i + 1);
-            }
-            kills.getData().add(new XYChart.Data<>(label, stat.getKills()));
-            deaths.getData().add(new XYChart.Data<>(label, stat.getDeaths()));
-            assists.getData().add(new XYChart.Data<>(label, stat.getAssists()));
-            scoreSeries.getData().add(new XYChart.Data<>(label, stat.getScore()));
-        }
-
-        kdaChart.getData().clear();
-        kdaChart.getData().addAll(kills, deaths, assists);
-
-        scoreChart.getData().clear();
-        scoreChart.getData().add(scoreSeries);
+    private void showAlert(Alert.AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

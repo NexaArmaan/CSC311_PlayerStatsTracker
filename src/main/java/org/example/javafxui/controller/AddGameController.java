@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import org.example.javafxui.Session;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -38,10 +39,19 @@ public class AddGameController {
         try {
             Session.gameService.addGame(Session.currentUser.id, name);
             messageLabel.setText("Game added!");
+            showAlert(Alert.AlertType.INFORMATION, "Game Added", "Game added successfully.");
             gameNameField.clear();
         } catch (Exception e) {
             messageLabel.setText(e.getMessage());
         }
+    }
+
+    private void showAlert(Alert.AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     @FXML
@@ -52,13 +62,17 @@ public class AddGameController {
     private void loadScene(ActionEvent event, String fxmlPath) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
 
-        Scene scene = new Scene(root, 900, 600);
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+        Scene scene = new Scene(root, 1500, 1000);
         scene.getStylesheets().add(
                 getClass().getResource("/styles/app.css").toExternalForm()
         );
 
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(scene);
+        stage.setWidth(1500);
+        stage.setHeight(1000);
+        stage.centerOnScreen();
         stage.show();
     }
 }
