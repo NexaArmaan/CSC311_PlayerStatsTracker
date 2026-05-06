@@ -184,6 +184,49 @@ public class ConnDbOps {
         } catch (SQLException e) { e.printStackTrace(); }
         return list;
     }
+
+    public String[] getGameDetails(int gameId) {
+        String sql =
+                "SELECT g.game_name, " +
+                        "COALESCE(SUM(s.kills), 0) AS total_kills, " +
+                        "COALESCE(SUM(s.deaths), 0) AS total_deaths, " +
+                        "COALESCE(SUM(s.assists), 0) AS total_assists, " +
+                        "COALESCE(SUM(s.score), 0) AS total_score " +
+                        "FROM GAMES g " +
+                        "LEFT JOIN STATS s ON g.game_id = s.game_id " +
+                        "WHERE g.game_id = ? " +
+                        "GROUP BY g.game_name";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, gameId);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                String gameName = rs.getString("game_name");
+                int kills = rs.getInt("total_kills");
+                int deaths = rs.getInt("total_deaths");
+                int assists = rs.getInt("total_assists");
+                int score = rs.getInt("total_score");
+
+                double kdRatio = deaths == 0 ? kills : (double) kills / deaths;
+
+                return new String[]{
+                        gameName,
+                        String.valueOf(kills),
+                        String.valueOf(deaths),
+                        String.valueOf(assists),
+                        String.valueOf(score),
+                        String.format("%.2f", kdRatio)
+                };
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
     // ---------------------------
     // GAME METHODS
     // ---------------------------
@@ -222,25 +265,50 @@ public class ConnDbOps {
         return games;
     }
 
+    public boolean deleteGameAndStats(int gameId) {
+        try {
+            conn.setAutoCommit(false);
+
+            String deleteStatsSql = "DELETE FROM STATS WHERE game_id = ?";
+            try (PreparedStatement ps = conn.prepareStatement(deleteStatsSql)) {
+                ps.setInt(1, gameId);
+                ps.executeUpdate();
+            }
+
+            String deleteGameSql = "DELETE FROM GAMES WHERE game_id = ?";
+            try (PreparedStatement ps = conn.prepareStatement(deleteGameSql)) {
+                ps.setInt(1, gameId);
+                ps.executeUpdate();
+            }
+
+            conn.commit();
+            return true;
+
+        } catch (SQLException e) {
+            try {
+                conn.rollback();
+            } catch (SQLException rollbackError) {
+                rollbackError.printStackTrace();
+            }
+
+            e.printStackTrace();
+            return false;
+
+        } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public boolean updateGame(int gameId, String newName) {
         String sql = "UPDATE GAMES SET game_name = ? WHERE game_id = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, newName);
             ps.setInt(2, gameId);
-            ps.executeUpdate();
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public boolean deleteGame(int gameId) {
-        String sql = "DELETE FROM GAMES WHERE game_id = ?";
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, gameId);
             ps.executeUpdate();
             return true;
         } catch (SQLException e) {

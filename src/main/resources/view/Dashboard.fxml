@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox spacing="26" alignment="CENTER"
+<VBox spacing="24" alignment="CENTER"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="org.example.javafxui.controller.DashboardController"
       styleClass="root-pane">
@@ -27,11 +27,40 @@
         </VBox>
     </HBox>
 
-    <VBox spacing="12" alignment="CENTER" styleClass="panel">
-        <Label text="Your Games" styleClass="section-title"/>
-        <ListView fx:id="gamesListView" maxWidth="520" maxHeight="180"/>
-        <Label text="Select a game ID when adding stats." styleClass="hint-label"/>
-    </VBox>
+    <HBox spacing="22" alignment="CENTER">
+
+        <VBox spacing="12" alignment="CENTER" styleClass="panel">
+            <Label text="Your Games" styleClass="section-title"/>
+            <ListView fx:id="gamesListView" prefWidth="340" prefHeight="210"/>
+            <Label text="Click a game to view details." styleClass="hint-label"/>
+        </VBox>
+
+        <VBox spacing="12" alignment="CENTER" styleClass="panel">
+            <Label text="Game Details" styleClass="section-title"/>
+
+            <Label fx:id="selectedGameLabel" text="No game selected" styleClass="detail-title"/>
+
+            <GridPane hgap="18" vgap="10" alignment="CENTER">
+                <Label text="Kills:" styleClass="detail-label" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                <Label fx:id="selectedKillsLabel" text="0" styleClass="detail-value" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                <Label text="Deaths:" styleClass="detail-label" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                <Label fx:id="selectedDeathsLabel" text="0" styleClass="detail-value" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                <Label text="Assists:" styleClass="detail-label" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                <Label fx:id="selectedAssistsLabel" text="0" styleClass="detail-value" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                <Label text="Score:" styleClass="detail-label" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                <Label fx:id="selectedScoreLabel" text="0" styleClass="detail-value" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+                <Label text="K/D Ratio:" styleClass="detail-label" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                <Label fx:id="selectedKdLabel" text="0.00" styleClass="detail-value" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+            </GridPane>
+
+            <Button text="Delete Selected Game" onAction="#deleteSelectedGame" styleClass="danger-button"/>
+        </VBox>
+
+    </HBox>
 
     <HBox spacing="16" alignment="CENTER">
         <Button text="Add Game" onAction="#goToAddGame"/>

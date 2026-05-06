@@ -10,6 +10,11 @@
       styleClass="root-pane">
 
     <Label text="Performance Report" styleClass="title"/>
+    <Label fx:id="summaryLabel"
+           text="Summary will appear here."
+           wrapText="true"
+           maxWidth="760"
+           styleClass="report-summary"/>
 
     <HBox spacing="18" alignment="CENTER">
         <VBox alignment="CENTER" styleClass="stat-card">

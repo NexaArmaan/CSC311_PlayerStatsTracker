@@ -49,25 +49,29 @@ public class LoginController {
     public void goToRegister(ActionEvent event) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/view/Register.fxml"));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(new Scene(root, 900, 600));
+        stage.setScene(new Scene(root, 1000, 600));
     }
 
     private void goToDashboard(ActionEvent event) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/view/Dashboard.fxml"));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(new Scene(root, 900, 600));
+        stage.setScene(new Scene(root, 1000, 600));
     }
 
     private void loadScene(ActionEvent event, String fxmlPath) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
 
-        Scene scene = new Scene(root, 1400, 900);
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+        Scene scene = new Scene(root, 1500, 1000);
         scene.getStylesheets().add(
                 getClass().getResource("/styles/app.css").toExternalForm()
         );
 
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(scene);
+        stage.setWidth(1500);
+        stage.setHeight(1000);
+        stage.centerOnScreen();
         stage.show();
     }
 }

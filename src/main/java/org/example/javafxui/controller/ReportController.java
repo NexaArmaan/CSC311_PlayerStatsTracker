@@ -30,6 +30,9 @@ public class ReportController {
     private Label kdRatioLabel;
 
     @FXML
+    private Label summaryLabel;
+
+    @FXML
     private BarChart<String, Number> kdaChart;
 
     @FXML
@@ -46,6 +49,8 @@ public class ReportController {
         }
 
         int userId = Session.currentUser.id;
+
+        loadSummaryText(userId);
 
         totalDeathsLabel.setText(String.valueOf(Session.db.getTotalDeaths(userId)));
         totalAssistsLabel.setText(String.valueOf(Session.db.getTotalAssists(userId)));
@@ -114,13 +119,41 @@ public class ReportController {
     private void loadScene(ActionEvent event, String fxmlPath) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
 
-        Scene scene = new Scene(root, 900, 600);
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+        Scene scene = new Scene(root, 1500, 1000);
         scene.getStylesheets().add(
                 getClass().getResource("/styles/app.css").toExternalForm()
         );
 
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(scene);
+        stage.setWidth(1500);
+        stage.setHeight(1000);
+        stage.centerOnScreen();
         stage.show();
+    }
+
+    private void loadSummaryText(int userId) {
+        int totalGames = Session.db.getTotalGames(userId);
+        int totalKills = Session.db.getTotalKills(userId);
+        int totalDeaths = Session.db.getTotalDeaths(userId);
+        int totalAssists = Session.db.getTotalAssists(userId);
+        int bestScore = Session.db.getBestScore(userId);
+        double kdRatio = Session.db.getKDRatio(userId);
+        double averageScore = Session.db.getAverageScore(userId);
+
+        String summary = String.format(
+                "You have tracked %d game(s), with %d total kills, %d deaths, and %d assists. " +
+                        "Your current K/D ratio is %.2f, your average score is %.1f, and your best recorded score is %d.",
+                totalGames,
+                totalKills,
+                totalDeaths,
+                totalAssists,
+                kdRatio,
+                averageScore,
+                bestScore
+        );
+
+        summaryLabel.setText(summary);
     }
 }

@@ -119,3 +119,42 @@
 .combo-box .list-cell {
     -fx-text-fill: #111827;
 }
+
+.detail-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.detail-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #c7d2fe;
+    -fx-font-weight: bold;
+}
+
+.detail-value {
+    -fx-font-size: 14px;
+    -fx-text-fill: white;
+}
+
+.danger-button {
+    -fx-background-color: #dc2626;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 12;
+    -fx-padding: 10 18 10 18;
+}
+
+.danger-button:hover {
+    -fx-background-color: #b91c1c;
+}
+
+.report-summary {
+    -fx-background-color: rgba(255, 255, 255, 0.12);
+    -fx-background-radius: 16;
+    -fx-padding: 16;
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+    -fx-line-spacing: 4px;
+}
