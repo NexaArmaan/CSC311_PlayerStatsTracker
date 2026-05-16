@@ -1,48 +1,175 @@
+<div align="center">
+
 # Player Statistics Tracker
 
-## Overview
-The Player Statistics Tracker is a full-stack Java application that allows users to track and analyze their performance across different video games. Users can input match data such as wins, losses, kills, and other metrics, and the system generates reports and visualizations to help monitor improvement over time.
+### A JavaFX desktop application for tracking and analyzing video game performance.
 
-This project is built using JavaFX for the frontend and Java Derby for the backend database.
+**CSC 311 — Advanced Programming**  
+**Farmingdale State College**
 
-## Features
-- User registration and login system
-- Add and manage multiple games
-- Record match statistics (wins, losses, kills, etc.)
-- Dashboard displaying overall performance
-- Data visualization using charts and graphs
-- Performance reports and summaries
+</div>
 
-## Tech Stack
-- **Frontend:** JavaFX (SceneBuilder, CSS)
-- **Backend:** Java
-- **Database:** Java Derby
-- **Tools:** IntelliJ IDEA, GitHub
- 
-## How It Works
-Users create an account and log in to the application. Once logged in, they can add games and record match statistics. The system stores this data in a database and processes it to generate insights such as win rates, averages, and trends over time. These insights are displayed through charts and reports on the dashboard.
+---
 
-## Team Roles
-- Backend & Database: Handles data storage, queries, and logic
-- Frontend (UI/UX): Designs and builds JavaFX interfaces
-- Integration: Connects frontend with backend functionality
+## Project Overview
 
+**Player Statistics Tracker** is a Java-based desktop application that allows users to track their performance across different video games. Users can create an account, log in, add games to their personal profile, record match statistics, and view performance summaries through a dashboard and report page.
 
-## CITATIONS
-Angie Portillo
-- For my part of the project I went back to previous assignments (ex: Assignment JavaFX using cards for math formula) to look over the JavaFX code. I used the css styling files and .fxml files as a template and then edited and added multiple new tabs as I went along. I did use homework assignments from another class  (Data Structures) to use the methods as an example when implenting everyone else's code with mine.
+The goal of this project was to build a full-stack style Java application using a JavaFX frontend, Java backend logic, and an embedded Apache Derby database. The application stores user, game, and statistics data locally and uses that data to generate summaries, charts, and reports.
 
-Patrick Cortez
-- For my part, I used previous assignments from this class, like the UI enhancement from Module 6, to know how to structure the database and get it working. I also took CSC 363, which is Data Management and it helped me be able to understand the SQL code and know what it does.
-  
-## Authors
-- Kelvin Morales
-- Armaan Arora
-- Angie Portillo
-- Aman Qais
-- Patrick Cortez
+This project currently focuses on competitive gaming statistics such as kills, deaths, assists, and score. These metrics work well for shooter-style and multiplayer games, but the project architecture can be expanded in the future to support different stat templates for racing games, sports games, RPGs, puzzle games, and other genres.
 
-## FIGMA
-https://www.figma.com/proto/nkVAMPp1Juj1d8VEFxiwBc/Untitled?node-id=1-23&t=p4211wVfu7ab1Ymx-1
+---
 
+## Main Features
 
+### User Authentication
+- Register a new user account
+- Log in using saved credentials
+- Store the current user session after login
+- Keep each user's games and statistics separate
+
+### Game Management
+- Add new games to a user profile
+- View all games connected to the logged-in user
+- Edit selected game names
+- Delete selected games and their connected statistics
+
+### Statistics Tracking
+- Select a game from a dropdown
+- Add match statistics including:
+  - Kills
+  - Deaths
+  - Assists
+  - Score
+- Load existing statistics for a game
+- Update saved statistics
+- Clear form fields when needed
+
+### Dashboard
+- Displays user-specific performance summaries
+- Shows total games, total kills, and average score
+- Lists saved games for the logged-in user
+- Displays selected game details such as kills, deaths, assists, score, and K/D ratio
+
+### Reports and Data Visualization
+- Generates a performance report using stored database records
+- Displays charts for kills, deaths, assists, and score
+- Shows calculated values such as:
+  - Total deaths
+  - Total assists
+  - Best score
+  - K/D ratio
+  - Average score
+
+---
+
+## Technology Stack
+
+| Layer | Technology | Purpose |
+|------|------------|---------|
+| Frontend | JavaFX, FXML | Desktop user interface and screen layouts |
+| Styling | CSS | Custom dark theme, buttons, panels, and cards |
+| Backend Logic | Java | Controllers, services, validation, and application logic |
+| Database | Apache Derby | Embedded local database for persistent storage |
+| Build Tool | Maven | Dependency management and project running |
+| IDE | IntelliJ IDEA | Development environment |
+| Version Control | Git & GitHub | Branching, commits, and collaboration |
+| Design | Figma | LoFi wireframes and HiFi design planning |
+
+---
+
+## Application Architecture
+
+The project follows a layered structure to keep the interface, business logic, models, and database code organized.
+
+```text
+Player Statistics Tracker
+│
+├── Presentation Layer
+│   ├── JavaFX Controllers
+│   ├── FXML Views
+│   └── CSS Styling
+│
+├── Business Logic Layer
+│   ├── GameService
+│   ├── StatsCalculator
+│   └── Session Management
+│
+├── Model Layer
+│   ├── User
+│   └── Stats
+│
+└── Database Layer
+    └── ConnDbOps
+```
+---
+
+## Project Structure
+
+```
+src/main/java/org/example/javafxui
+│
+├── controller
+│   ├── AddGameController.java
+│   ├── DashboardController.java
+│   ├── LoginController.java
+│   ├── RegisterController.java
+│   ├── ReportController.java
+│   └── StatsController.java
+│
+├── db
+│   └── ConnDbOps.java
+│
+├── model
+│   ├── Stats.java
+│   └── User.java
+│
+├── service
+│   ├── GameService.java
+│   └── StatsCalculator.java
+│
+├── MainApp.java
+└── Session.java
+
+src/main/resources
+│
+├── styles
+│   └── app.css
+│
+└── view
+    ├── AddGame.fxml
+    ├── Dashboard.fxml
+    ├── Login.fxml
+    ├── Register.fxml
+    ├── Report.fxml
+    └── Stats.fxml
+```
+---
+
+## Database Design
+
+The application uses Apache Derby as an embedded local database. The database is created automatically when the application starts.
+
+### Main Tables
+
+```
+USERS
+- user_id
+- username
+- email
+- password
+
+GAMES
+- game_id
+- user_id
+- game_name
+
+STATS
+- stat_id
+- game_id
+- kills
+- deaths
+- assists
+- score
+```
