@@ -18,7 +18,7 @@ This project is built using JavaFX for the frontend and Java Derby for the backe
 - **Backend:** Java
 - **Database:** Java Derby
 - **Tools:** IntelliJ IDEA, GitHub
-
+ 
 ## How It Works
 Users create an account and log in to the application. Once logged in, they can add games and record match statistics. The system stores this data in a database and processes it to generate insights such as win rates, averages, and trends over time. These insights are displayed through charts and reports on the dashboard.
 
@@ -31,6 +31,10 @@ Users create an account and log in to the application. Once logged in, they can 
 ## CITATIONS
 Angie Portillo
 - For my part of the project I went back to previous assignments (ex: Assignment JavaFX using cards for math formula) to look over the JavaFX code. I used the css styling files and .fxml files as a template and then edited and added multiple new tabs as I went along. I did use homework assignments from another class  (Data Structures) to use the methods as an example when implenting everyone else's code with mine.
+
+Patrick Cortez
+- For my part, I used previous assignments from this class, like the UI enhancement from Module 6, to know how to structure the database and get it working. I also took CSC 363, which is Data Management and it helped me be able to understand the SQL code and know what it does.
+  
 ## Authors
 - Kelvin Morales
 - Armaan Arora
