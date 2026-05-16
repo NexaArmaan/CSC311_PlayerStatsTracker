@@ -27,6 +27,9 @@ Users create an account and log in to the application. Once logged in, they can 
 - Frontend (UI/UX): Designs and builds JavaFX interfaces
 - Integration: Connects frontend with backend functionality
 
+
+## CITATIONS
+
 ## Authors
 - Kelvin Morales
 - Armaan Arora
@@ -37,4 +40,4 @@ Users create an account and log in to the application. Once logged in, they can 
 ## FIGMA
 https://www.figma.com/proto/nkVAMPp1Juj1d8VEFxiwBc/Untitled?node-id=1-23&t=p4211wVfu7ab1Ymx-1
 
-## CITATIONS
+
