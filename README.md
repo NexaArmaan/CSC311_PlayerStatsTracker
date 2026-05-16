@@ -29,7 +29,8 @@ Users create an account and log in to the application. Once logged in, they can 
 
 
 ## CITATIONS
-
+Angie Portillo
+- For my part of the project I went back to previous assignments (ex: Assignment JavaFX using cards for math formula) to look over the JavaFX code. I used the css styling files and .fxml files as a template and then edited and added multiple new tabs as I went along. I did use homework assignments from another class  (Data Structures) to use the methods as an example when implenting everyone else's code with mine.
 ## Authors
 - Kelvin Morales
 - Armaan Arora
