@@ -232,17 +232,22 @@ Figma Link: https://www.figma.com/proto/nkVAMPp1Juj1d8VEFxiwBc/Untitled?node-id=
 ## Application Screenshots
 
 ### Login Screen
+![Login Screen](docs/Screenshots/Login.png)
 
 ### Register Screen
+![Register Screen](docs/Screenshots/Register.png)
 
 ### Dashboard
+![Dashboard](docs/Screenshots/Dashboard.png)
 
 ### Add Game
+![Add Game](docs/Screenshots/Add%20Game.png)
 
 ### Add Stats
+![Add Stats](docs/Screenshots/Add%20Stats.png)
 
 ### Performance Report
-
+![Performance Report](docs/Screenshots/Performance%20Report.png)
 
 ---
 
